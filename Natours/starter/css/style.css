@@ -41,10 +41,11 @@ body{
 .text-box{
     position: absolute;
     /* 這邊移動的位置是以整個block的最左邊緣調整，但希望以最中間的地方調整*/
-    top: 50%;
+    top: 40%;
     left: 50%;
     /* 這邊要用方法校正*/
     transform: translate(-50%, -50%);
+    text-align: center;
 }
 .heading-primary{
     color: #fff;
@@ -52,6 +53,7 @@ body{
 
     /*不會有震盪的效果*/
     backface-visibility: hidden;
+    margin-bottom: 60px;
 }
 .heading-primary-main{
     display: block;
@@ -84,7 +86,7 @@ body{
 
 @keyframes moveInLeft{
     0%{
-        /*透明化 直接透明 -100:左往右*/
+        /*透明化 直接透明 translateX：-100 左往右*/
         opacity: 0;
         transform: translateX(-100px);
     }
@@ -113,16 +115,30 @@ body{
     }
 }
 
+@keyframes moveInBottom{
+    0%{
+        /*透明化 直接透明 -100:左往右*/
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    100%{
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
 /*pesudo class當某種狀態達成時 換轉換成該css的style。如按下按鈕換別的css*/
-.btn:link
-.btn:visited{
+.btn, .btn:link, .btn:visited{
     text-transform: uppercase;
     text-decoration: none;
-    padding: 15px, 40px;
+    padding: 15px 40px ;
     display: inline-block;
     border-radius: 100px;
     transition: all, -2s;
+    position: relative;
+    
 }
+/*滑鼠移動過去時*/
 .btn:hover{
     transform: translateY(-3px);
     box-shadow: 0 10px 20px rgba(0, 0, 0, .2);
@@ -130,11 +146,39 @@ body{
 /*按下之後*/
 .btn:active{
     transform: translateY(-1px);
-    box-shadow: 0 5px 20px rgba(0, 0, 0, .2);
+    box-shadow: 0 5px 10px rgba(0, 0, 0, .2);
 
-}
-
+}   
 .btn-white{
     background-color: #fff;
     color: #777;
+}
+
+/* ::after：在 originating 元素的內容之後建立的 child pseudo-element */
+.btn::after{
+    /* 一定要有的屬性 content */
+    content: ""; 
+    display: inline-block;
+    height: 100%;
+    width: 100%;
+    border-radius: 100px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    /* 使該元素在最下面 */
+    z-index: -1;
+    transition: all .4s;
+}
+.btn-white::after{
+    background-color: #fff;
+}
+.btn:hover::after{
+    /* 貌似是事件一定會放的屬性，直接擴大好幾倍的意思，可以調整XY軸調整大小不同 */
+    transform: scaleX(1.5) scaleY(1.6);
+    opacity: 0;
+}
+
+.btn-animated{
+    animation: moveInBottom .5s ease-out .75s;
+    animation-fill-mode: backwards;
 }
